@@ -1,31 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUserContext } from './UserContext';
 import './Users.css';
 
-const Users = () => {
-  // const navigate = useNavigate();
-  
-  const [usersData, setUsersData] = useState({
-    1: {
-      id: 1,
-      name: "Aziz",
-      tasks: [
-        { id: 1, text: 'read the book (at least 5 pages)', completed: false },
-        { id: 2, text: 'buy dog food', completed: true },
-        { id: 3, text: 'call my parents', completed: false }
-      ]
-    },
-    2: {
-      id: 2,
-      name: "Imaz",
-      tasks: [
-        { id: 1, text: 'clean my working place', completed: true },
-        { id: 2, text: 'kill Bill', completed: true }
-      ]
-    }
-  });
-
- 
+export default function Users() {
+  const navigate = useNavigate();
+  const { usersData } = useUserContext();
   const [openAccordion, setOpenAccordion] = useState(null);
 
   const handleAccordionClick = (userId) => {
@@ -33,14 +13,9 @@ const Users = () => {
   };
   
   const handleViewTodos = (userId) => {
-    console.log(userId);
-    // navigate('/todos/${userId}', { 
-      // state: {
-      //   usersData: usersData[userId]
-      // }
-    // });
+    // console.log(userId)
+    navigate(`/todos/${userId}`);
   };
- 
 
   return (
     <div className="users-container">
@@ -57,9 +32,9 @@ const Users = () => {
             </div>
             <div className={`accordion-content ${openAccordion === user.id ? 'open' : ''}`}>
               <button 
-               onClick={() => handleViewTodos(user.id)}
-               className="view-all-btn"
-               >
+                onClick={() => handleViewTodos(user.id)}
+                className="view-all-btn"
+              >
                 View Full Todo List
               </button>
             </div>
@@ -68,6 +43,4 @@ const Users = () => {
       </div>
     </div>
   );
-};
-
-export default Users;
+}

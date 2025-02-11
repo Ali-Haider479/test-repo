@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useUserContext } from './UserContext';
 import './TodoList.css';
 
 const TodoItem = ({ task, toggleTask, deleteTask }) => {
@@ -24,22 +26,16 @@ const TodoItem = ({ task, toggleTask, deleteTask }) => {
 function generateId() {
     return crypto.randomUUID();
 }
-import { useLocation, useParams } from 'react-router-dom';
+
 const TodoList = () => {
+    const { userId } = useParams();
+    const { usersData, updateUserTasks, handleDelete } = useUserContext();
+    const user = usersData[userId];
     
-    const {userId} = useParams();
-    const location = useLocation();
-    const navigate = useNavigate();
-
-    
-    const {usersData, setUsersData} = location.state;
-    const currentUser = usersData[userId];
-
-    const userName = currentUser.name
     // const [tasks, setTasks] = useState([
     //     { id: 1, text: 'Car wash', completed: false }
     // ]);
-    const [tasks, setTasks] = useState(initialTasks);
+    const [tasks, setTasks] = useState(user?.tasks || []);
     const [newTask, setNewTask] = useState('');
     const [completedTasks, setCompletedTasks] = useState(1)
 
@@ -47,7 +43,7 @@ const TodoList = () => {
 
     function handleSubmit(e) {
         e.preventDefault();
-        console.log(newTask);
+        console.log(user);
         if (newTask.trim() !== "") {
             setTasks([
                 ...tasks, {
@@ -60,6 +56,10 @@ const TodoList = () => {
 
         setNewTask('');
     }
+
+
+
+
     function handleToggle(id) {
         const newTasks = tasks.map(task => {
             if (task.id === id) {
@@ -122,8 +122,6 @@ const TodoList = () => {
                 </div>
 
             </div>
-
-
         </div>
     );
 };

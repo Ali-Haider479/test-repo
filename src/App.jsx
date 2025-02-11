@@ -8,16 +8,21 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import { UserProvider } from "./userContext";
 
 
 function App() {
   return (
-    <Router>
-      <Routes>
-      <Route path="/" element={<Users />} />
-      <Route path="/todos/:userId" element={<TodoList />} />
-        </Routes>
-    </Router>
+    <div>
+      <UserProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Users />} />
+            <Route path="/todos/:userId" element={<TodoList />} />
+          </Routes>
+        </Router>
+      </UserProvider>
+    </div>
     // <>
     //   <TodoList/>
     // </>
